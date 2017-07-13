@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.SqnCompanyMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.SqnCompany" id="SqnCompanyResult">
+           <result column="id" property="id" />
+           <result column="companyname" property="companyname" />
+           <result column="lxr" property="lxr" />
+           <result column="lxdz" property="lxdz" />
+           <result column="lxdh" property="lxdh" />
+           <result column="cityid" property="cityid" />
+           <result column="remark" property="remark" />
+           <result column="createtime" property="createtime" />
+           <result column="createuserid" property="createuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="bz1" property="bz1" />
+           <result column="bz2" property="bz2" />
+           <result column="bz3" property="bz3" />
+           <result column="bz4" property="bz4" />
+           <result column="bz5" property="bz5" />
+           <result column="bz6" property="bz6" />
+           <result column="icon" property="icon" />
+           <result column="registerid" property="registerid" />
+           <result column="letter" property="letter" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-06-01 14:35:08 表sqn_company的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="SqnCompanyResult">
+		<![CDATA[ select a.*,b.cityname as cityname from sqn_company a left join city b on b.id = a.cityid where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="lxr!=null and lxr!=''"><![CDATA[ and a.lxr like '%' #{lxr} '%' ]]></if>
+		<if test="lxdh!=null and lxdh!=''"><![CDATA[ and a.lxdh = #{lxdh} ]]></if>
+		<if test="cityid!=null and cityid!=''"><![CDATA[ and a.cityid = #{cityid} ]]></if>
+		<if test="companyname!=null and companyname!=''"><![CDATA[ and a.companyname like '%' #{companyname} '%' ]]></if>
+		<![CDATA[ order by a.createtime desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-01 14:35:08 表sqn_company的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="SqnCompanyResult">
+		<![CDATA[ select a.* from sqn_company a left join city b on b.id = a.cityid where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="cityshort!=null and cityshort!=''"><![CDATA[ and b.cityshort = #{cityshort} ]]></if>
+		<![CDATA[ order by id desc ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-01 14:35:08 表sqn_company的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(*) as count from sqn_company a left join city b on b.id = a.cityid where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="lxr!=null and lxr!=''"><![CDATA[ and a.lxr like '%' #{lxr} '%' ]]></if>
+		<if test="lxdh!=null and lxdh!=''"><![CDATA[ and a.lxdh = #{lxdh} ]]></if>
+		<if test="cityid!=null and cityid!=''"><![CDATA[ and a.cityid = #{cityid} ]]></if>
+		<if test="companyname!=null and companyname!=''"><![CDATA[ and a.companyname like '%' #{companyname} '%' ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-06-01 14:35:08 表sqn_company的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.SqnCompany" >
+		insert into sqn_company(id,companyname,lxr,lxdz,lxdh,cityid,remark,createtime,createuserid,updatetime,updateuserid,bz1,bz2,bz3,bz4,bz5,bz6,icon,registerid,letter )
+		values(#{id},#{companyname},#{lxr},#{lxdz},#{lxdh},#{cityid},#{remark},#{createtime},#{createuserid},#{updatetime},#{updateuserid},#{bz1},#{bz2},#{bz3},#{bz4},#{bz5},#{bz6},#{icon},#{registerid},#{letter} )
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-01 14:35:08 表sqn_company的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update sqn_company set 
+		 id = #{id},
+		 companyname = #{companyname},
+		 lxr = #{lxr},
+		 lxdz = #{lxdz},
+		 lxdh = #{lxdh},
+		 cityid = #{cityid},
+		 remark = #{remark},
+		 createtime = #{createtime},
+		 createuserid = #{createuserid},
+		 updatetime = #{updatetime},
+		 updateuserid = #{updateuserid},
+		 bz1 = #{bz1},
+		 bz2 = #{bz2},
+		 bz3 = #{bz3},
+		 bz4 = #{bz4},
+		 bz5 = #{bz5},
+		 bz6 = #{bz6},
+		 icon = #{icon},
+		 registerid = #{registerid},
+		 letter = #{letter} 
+		 
+		 where id = #{id}]]>
+	</update>
+	
+	<delete id="doDelete"  flushCache="true"  >
+		<![CDATA[ delete from sqn_company where 1 =1]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</delete>
+	
+	
+	
+	<!-- @author 黄冬杰 Date: 2017-06-01 14:35:08 表sqn_company的通用查询业务无分页 --> 
+	<select  id="doQueryUnbindNoPage" parameterType="java.util.Map" resultMap="SqnCompanyResult">
+		<![CDATA[ select a.*,b.cityname as cityname from sqn_company a 
+				  left join city b on b.id = a.cityid where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="cityshort!=null and cityshort!=''"><![CDATA[ and b.cityshort = #{cityshort} ]]></if>
+		<if test="registerid!=null and registerid!=''"><![CDATA[ and a.registerid = #{registerid} ]]></if>
+		<![CDATA[ order by a.id desc ]]>
+	</select>
+	
+</mapper>

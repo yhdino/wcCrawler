@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<link href="./css/main.css?a=6" rel="stylesheet" type="text/css" fortheme="yes" />
+<script src="./js/three.min.js?a=1"></script>
+<script src="./js/OrbitControls.js?a=2"></script>
+<script id="vertexShader" type="x-shader/x-vertex">
+            uniform vec3 viewVector;
+            uniform float c;
+            uniform float p;
+            varying float intensity;
+
+            void main({
+                vec3 vNormal = normalize( normalMatrix * normal );
+                vec3 vNormel = normalize( normalMatrix * viewVector );
+                intensity = pow( c - dot(vNormal, vNormel), p );
+
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        </script>
+
+<script id="fragmentShader" type="x-shader/x-fragment">
+            uniform vec3 glowColor;
+            varying float intensity;
+
+        void main() {
+            vec3 glow = glowColor * intensity;
+            gl_FragColor = vec4( glow, 1.0 );
+        }
+        </script>
+	<body>
+	<body>
+	<div id="container">
+	</div>
+	<div class="title">		
+		<h3>舆情信息分布图</h3>	
+	</div>	
+	<div class="btn" onclick="getIn();">进入</div>
+		<script src="./js/main.js?a=123456"></script>
+	</body>
+	</body>
+<script>
+	function getIn() {
+		window.location.href="http://localhost:8080/view/index.html";
+	}
+</script>
+</html>

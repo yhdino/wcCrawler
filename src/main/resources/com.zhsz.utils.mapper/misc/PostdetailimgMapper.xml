@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.PostdetailimgMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.Postdetailimg" id="PostdetailimgResult">
+           <result column="id" property="id" />
+           <result column="oldpath" property="oldpath" />
+           <result column="newpath" property="newpath" />
+           <result column="fingerprint" property="fingerprint" />
+           <result column="createtime" property="createtime" />
+           <result column="createuserid" property="createuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="bz1" property="bz1" />
+           <result column="bz2" property="bz2" />
+           <result column="bz3" property="bz3" />
+           <result column="bz4" property="bz4" />
+           <result column="bz5" property="bz5" />
+           <result column="bz6" property="bz6" />
+           <result column="contentid" property="contentid" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-06-26 17:32:56 表postdetailimg的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="PostdetailimgResult">
+		<![CDATA[ select * from postdetailimg where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-26 17:32:56 表postdetailimg的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="PostdetailimgResult">
+		<![CDATA[ select * from postdetailimg where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-26 17:32:56 表postdetailimg的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from postdetailimg  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-06-26 17:32:56 表postdetailimg的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.Postdetailimg" >
+		insert into postdetailimg(id,oldpath,newpath,fingerprint,createtime,createuserid,updatetime,updateuserid,bz1,bz2,bz3,bz4,bz5,bz6,contentid )
+		values(#{id},#{oldpath},#{newpath},#{fingerprint},#{createtime},#{createuserid},#{updatetime},#{updateuserid},#{bz1},#{bz2},#{bz3},#{bz4},#{bz5},#{bz6},#{contentid})
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-26 17:32:56 表postdetailimg的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update postdetailimg set 
+		 id = #{id},
+		 oldpath = #{oldpath},
+		 newpath = #{newpath},
+		 fingerprint = #{fingerprint},
+		 createtime = #{createtime},
+		 createuserid = #{createuserid},
+		 updatetime = #{updatetime},
+		 updateuserid = #{updateuserid},
+		 bz1 = #{bz1},
+		 bz2 = #{bz2},
+		 bz3 = #{bz3},
+		 bz4 = #{bz4},
+		 bz5 = #{bz5},
+		 bz6 = #{bz6},
+		 contentid = #{contentid} 
+		where id = #{id}]]>
+	</update>
+	
+</mapper>

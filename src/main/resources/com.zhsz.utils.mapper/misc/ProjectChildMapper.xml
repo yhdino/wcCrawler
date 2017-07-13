@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.ProjectChildMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.ProjectChild" id="ProjectChildResult">
+           <result column="id" property="id" />
+           <result column="parent_project_id" property="parent_project_id" />
+           <result column="project_child_name" property="project_child_name" />
+           <result column="num" property="num" />
+           <result column="createuserid" property="createuserid" />
+           <result column="createtime" property="createtime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="remark" property="remark" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表project_child的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="ProjectChildResult">
+		<![CDATA[ select * from project_child where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表project_child的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="ProjectChildResult">
+		<![CDATA[ select a.*,b.num as parent_num,count(c.pro_id) as register_num from project_child a
+				  left join project b on a.parent_project_id = b.id  
+				  left join register c on a.id = c.pro_id where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="parent_project_id!=null and parent_project_id!=''"><![CDATA[ and a.parent_project_id = #{parent_project_id} ]]></if>
+		<![CDATA[ group by a.id order by a.code,a.id  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表project_child的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from project_child  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表project_child的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.ProjectChild" >
+		insert into project_child(id,parent_project_id,project_child_name,num,createuserid,createtime,updateuserid,updatetime, )
+		values(#{id},#{parent_project_id},#{project_child_name},#{num},#{createuserid},#{createtime},#{updateuserid},#{updatetime} )
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表project_child的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update project_child set 
+		 id = #{id},
+ parent_project_id = #{parent_project_id},
+ project_child_name = #{project_child_name},
+ num = #{num},
+ createuserid = #{createuserid},
+ createtime = #{createtime},
+ updateuserid = #{updateuserid},
+ updatetime = #{updatetime} 
+		where id = #{id}]]>
+	</update>
+	
+	
+	
+	<select  id="doQueryListNoPage" parameterType="java.util.Map" resultMap="ProjectChildResult">
+		<![CDATA[ select a.* from project_child a
+				  left join project b on a.parent_project_id = b.id  where 1=1]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="parent_project_id!=null and parent_project_id!=''"><![CDATA[ and a.parent_project_id = #{parent_project_id} ]]></if>
+		<![CDATA[ order by a.id  ]]>
+	</select>
+	
+	<select  id="doQueryAll" parameterType="java.util.Map" resultMap="ProjectChildResult">
+		<![CDATA[ select * from project_child where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id  ]]>
+	</select>
+</mapper>

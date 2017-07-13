@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.DictionaryInfoMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.DictionaryInfo" id="DictionaryInfoResult">
+           <result column="id" property="id" />
+           <result column="name" property="name" />
+           <result column="group_name" property="group_name" />
+           <result column="createtime" property="createtime" />
+           <result column="createuserid" property="createuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="bz1" property="bz1" />
+           <result column="bz2" property="bz2" />
+           <result column="bz3" property="bz3" />
+           <result column="bz4" property="bz4" />
+           <result column="bz5" property="bz5" />
+           <result column="bz6" property="bz6" />
+           <result column="group_id" property="group_id" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表dictionary_info的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="DictionaryInfoResult">
+		<![CDATA[ select * from dictionary_info where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表dictionary_info的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="DictionaryInfoResult">
+		<![CDATA[ select a.*,b.id as group_id from dictionary_info a
+				  left join `group` b on a.group_name = b.group_name where 1 = 1  ]]>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name = #{name} ]]></if>
+		<if test="group_id!=null and group_id!=''"><![CDATA[ and b.id = #{group_id} ]]></if>
+		<![CDATA[ order by a.id desc ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表dictionary_info的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from dictionary_info  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表dictionary_info的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.DictionaryInfo" >
+		insert into dictionary_info(id,name,group_name,createtime,createuserid,updatetime,updateuserid,bz1,bz2,bz3,bz4,bz5,bz6 )
+		values(#{id},#{name},#{group_name},#{createtime},#{createuserid},#{updatetime},#{updateuserid},#{bz1},#{bz2},#{bz3},#{bz4},#{bz5},#{bz6})
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表dictionary_info的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update dictionary_info set 
+ name = #{name},
+ group_name = #{group_name},
+ createtime = #{createtime},
+ createuserid = #{createuserid},
+ updatetime = #{updatetime},
+ updateuserid = #{updateuserid},
+ bz1 = #{bz1},
+ bz2 = #{bz2},
+ bz3 = #{bz3},
+ bz4 = #{bz4},
+ bz5 = #{bz5},
+ bz6 = #{bz6}
+		where id = #{id}]]>
+	</update>
+	
+	
+	<select  id="doQueryDictionaryInfo" parameterType="java.util.Map" resultMap="DictionaryInfoResult">
+		<![CDATA[ select a.*, b.* from dictionary_info a 
+				  left join `group` b on a.group_name=b.group_name where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name like '%' #{name} '%' ]]></if>
+		<if test="group_name!=null and group_name!=''"><![CDATA[ and a.group_name = #{group_name} ]]></if>
+		<![CDATA[ order by a.id desc limit ${minnum},${maxnum} ]]>
+	</select>
+	
+	
+	<select  id="doQueryDictionaryInfoNoPage" parameterType="java.util.Map" resultMap="DictionaryInfoResult">
+		<![CDATA[ select a.*, b.* from dictionary_info a 
+				  left join `group` b on a.group_name=b.group_name where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name like '%' #{name} '%' ]]></if>
+		<if test="group_name!=null and group_name!=''"><![CDATA[ and a.group_name = #{group_name} ]]></if>
+		<![CDATA[ order by a.id desc ]]>
+	</select>
+	
+	
+	<select id="doQueryDictionaryInfoCount" parameterType="java.util.Map" resultType="long">
+		<![CDATA[ select count(a.id) as count from dictionary_info a 
+				  left join `group` b on a.group_name=b.group_name where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name like '%' #{name} '%' ]]></if>
+		<if test="group_name!=null and group_name!=''"><![CDATA[ and a.group_name = #{group_name} ]]></if>
+	</select>
+	
+	<delete id="deleteById"  flushCache="true"  >
+		<![CDATA[ delete from dictionary_info where 1 =1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</delete>
+</mapper>

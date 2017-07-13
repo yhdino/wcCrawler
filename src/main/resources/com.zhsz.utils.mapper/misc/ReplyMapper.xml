@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.ReplyMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.Reply" id="ReplyResult">
+           <result column="id" property="id" />
+           <result column="url" property="url" />
+           <result column="biz" property="biz" />
+           <result column="mid" property="mid" />
+           <result column="nick_name" property="nick_name" />
+           <result column="logo_url" property="logo_url" />
+           <result column="content" property="content" />
+           <result column="content_id" property="content_id" />
+           <result column="create_time" property="create_time" />
+           <result column="like_num" property="like_num" />
+           <result column="is_from_friend" property="is_from_friend" />
+           <result column="reply" property="reply" />
+           <result column="createtime" property="createtime" />
+           <result column="createuserid" property="createuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="bz1" property="bz1" />
+           <result column="bz2" property="bz2" />
+           <result column="bz3" property="bz3" />
+           <result column="bz4" property="bz4" />
+           <result column="bz5" property="bz5" />
+           <result column="bz6" property="bz6" />
+           <result column="positive" property="positive" />
+           <result column="negative" property="negative" />
+           <result column="neutral" property="neutral" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-06-19 15:43:12 表reply的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="ReplyResult">
+		<![CDATA[ select * from reply where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-19 15:43:12 表reply的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="ReplyResult">
+		<![CDATA[ select * from reply where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-19 15:43:12 表reply的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from reply  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<if test="content_id!=null and content_id!=''"><![CDATA[ and content_id = #{content_id} ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-06-19 15:43:12 表reply的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.Reply" >
+		insert into reply(id,url,biz,mid,nick_name,logo_url,content,content_id,create_time,like_num,is_from_friend,reply,createtime,createuserid,updatetime,updateuserid,bz1,bz2,bz3,bz4,bz5,bz6,positive,negative,neutral )
+		values(#{id},#{url},#{biz},#{mid},#{nick_name},#{logo_url},#{content},#{content_id},#{create_time},#{like_num},#{is_from_friend},#{reply},#{createtime},#{createuserid},#{updatetime},#{updateuserid},#{bz1},#{bz2},#{bz3},#{bz4},#{bz5},#{bz6},#{positive},#{negative},#{neutral})
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-19 15:43:12 表reply的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update reply set 
+		 id = #{id},
+ url = #{url},
+ biz = #{biz},
+ mid = #{mid},
+ nick_name = #{nick_name},
+ logo_url = #{logo_url},
+ content = #{content},
+ content_id = #{content_id},
+ create_time = #{create_time},
+ like_num = #{like_num},
+ is_from_friend = #{is_from_friend},
+ reply = #{reply},
+ createtime = #{createtime},
+ createuserid = #{createuserid},
+ updatetime = #{updatetime},
+ updateuserid = #{updateuserid},
+ bz1 = #{bz1},
+ bz2 = #{bz2},
+ bz3 = #{bz3},
+ bz4 = #{bz4},
+ bz5 = #{bz5},
+ bz6 = #{bz6},
+ positive = #{positive},
+ negative = #{negative},
+ neutral = #{neutral}
+		where id = #{id}]]>
+	</update>
+	
+	<select  id="doQueryByReply" parameterType="java.util.Map" resultMap="ReplyResult">
+		<![CDATA[ select sum(positive) as positivenum,sum(negative) as negativenum,sum(neutral) as neutralnum from reply a
+				left join post b on b.bz1 = a.mid
+				left join postdetail c on c.sn = b.sn
+				where 1=1  ]]>
+		<if test="searchkey!=null and searchkey!=''"><![CDATA[ and c.searchkey = #{searchkey} ]]></if>
+	</select>
+	
+</mapper>

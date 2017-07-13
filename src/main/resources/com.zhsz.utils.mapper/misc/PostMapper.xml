@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.PostMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.Post" id="PostResult">
+           <result column="id" property="id" />
+           <result column="biz" property="biz" />
+           <result column="field_id" property="field_id" />
+           <result column="title" property="title" />
+           <result column="title_encode" property="title_encode" />
+           <result column="digest" property="digest" />
+           <result column="content_url" property="content_url" />
+           <result column="source_url" property="source_url" />
+           <result column="cover" property="cover" />
+           <result column="is_multi" property="is_multi" />
+           <result column="is_top" property="is_top" />
+           <result column="datetime" property="datetime" />
+           <result column="readNum" property="readNum" />
+           <result column="likeNum" property="likeNum" />
+           <result column="type" property="type" />
+           <result column="createtime" property="createtime" />
+           <result column="createuserid" property="createuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="bz1" property="bz1" />
+           <result column="bz2" property="bz2" />
+           <result column="bz3" property="bz3" />
+           <result column="bz4" property="bz4" />
+           <result column="bz5" property="bz5" />
+           <result column="bz6" property="bz6" />
+           <result column="content_id" property="content_id" />
+           <result column="sn" property="sn" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-06-08 13:15:46 表post的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="PostResult">
+		<![CDATA[ select * from post where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-08 13:15:46 表post的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="PostResult">
+		<![CDATA[ select * from post where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-08 13:15:46 表post的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from post  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<if test="content_url!=null and content_url!=''"><![CDATA[ and content_url = #{content_url} ]]></if>
+		<if test="sn!=null and sn!=''"><![CDATA[ and sn = #{sn} ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-06-08 13:15:46 表post的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.Post" >
+		insert into post(id,biz,field_id,title,title_encode,digest,content_url,source_url,cover,is_multi,is_top,datetime,readNum,likeNum,type,createtime,createuserid,updatetime,updateuserid,bz1,bz2,bz3,bz4,bz5,bz6,content_id,sn )
+		values(#{id},#{biz},#{field_id},#{title},#{title_encode},#{digest},#{content_url},#{source_url},#{cover},#{is_multi},#{is_top},#{datetime},#{readNum},#{likeNum},#{type},#{createtime},#{createuserid},#{updatetime},#{updateuserid},#{bz1},#{bz2},#{bz3},#{bz4},#{bz5},#{bz6},#{content_id},#{sn} )
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-06-08 13:15:46 表post的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update post set 
+		 id = #{id},
+ biz = #{biz},
+ field_id = #{field_id},
+ title = #{title},
+ title_encode = #{title_encode},
+ digest = #{digest},
+ content_url = #{content_url},
+ source_url = #{source_url},
+ cover = #{cover},
+ is_multi = #{is_multi},
+ is_top = #{is_top},
+ datetime = #{datetime},
+ readNum = #{readNum},
+ likeNum = #{likeNum},
+ type = #{type},
+ createtime = #{createtime},
+ createuserid = #{createuserid},
+ updatetime = #{updatetime},
+ updateuserid = #{updateuserid},
+ bz1 = #{bz1},
+ bz2 = #{bz2},
+ bz3 = #{bz3},
+ bz4 = #{bz4},
+ bz5 = #{bz5},
+ bz6 = #{bz6},
+ content_id = #{content_id},
+ sn = #{sn}  
+		where id = #{id}]]>
+	</update>
+	
+	
+	<select  id="doQueryByPostDetail" parameterType="java.util.Map" resultMap="PostResult">
+		<![CDATA[ select a.sn as sn,a.title as title,a.digest as digest,a.cover as cover,a.datetime as datetime from post a
+				  left join postdetail b on b.sn = a.sn where 1=1   ]]>
+		<if test="searchkey!=null and searchkey!=''"><![CDATA[ and b.searchkey = #{searchkey} ]]></if>
+		<![CDATA[ order by a.createtime desc ]]>
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhsz.dao.mapper.misc.RegisterMapper">
+	<resultMap type="com.zhsz.dao.entity.misc.Register" id="RegisterResult">
+           <result column="id" property="id" />
+           <result column="name" property="name" />
+           <result column="pro_id" property="pro_id" />
+           <result column="telphone" property="telphone" />
+           <result column="groupid" property="groupid" />
+           <result column="openid" property="openid" />
+           <result column="createtime" property="createtime" />
+           <result column="createuserid" property="createuserid" />
+           <result column="updatetime" property="updatetime" />
+           <result column="updateuserid" property="updateuserid" />
+           <result column="bz1" property="bz1" />
+           <result column="bz2" property="bz2" />
+           <result column="bz3" property="bz3" />
+           <result column="bz4" property="bz4" />
+           <result column="bz5" property="bz5" />
+           <result column="bz6" property="bz6" />
+           <result column="email" property="email" />
+    </resultMap>
+ 
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表register的通用查询业务自带分页 --> 
+	<select  id="doQueryByCondition" parameterType="java.util.Map" resultMap="RegisterResult">
+		<![CDATA[ select * from register where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<![CDATA[ order by id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表register的通用查询业务无分页 --> 
+	<select  id="doQueryByConditionNoPage" parameterType="java.util.Map" resultMap="RegisterResult">
+		<![CDATA[ select * from register where 1 = 1  ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<if test="openid!=null and openid!=''"><![CDATA[ and openid = #{openid} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and name = #{name} ]]></if>
+		<if test="groupid!=null and groupid!=''"><![CDATA[ and groupid = #{groupid} ]]></if>
+		<![CDATA[ order by id desc ]]>
+	</select>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表register的通用查询数量业务 -->
+	<select id="doQueryCountByCondition" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from register  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</select>
+     
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表register的通用新增业务 --> 
+    <insert id="doInsert"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.Register" >
+		insert into register(id,name,pro_id,telphone,groupid,openid,createtime,createuserid,updatetime,updateuserid,bz1,bz2,bz3,bz4,bz5,bz6,email )
+		values(#{id},#{name},#{pro_id},#{telphone},#{groupid},#{openid},#{createtime},#{createuserid},#{updatetime},#{updateuserid},#{bz1},#{bz2},#{bz3},#{bz4},#{bz5},#{bz6},#{email})
+	</insert>
+	
+	<!-- @author 黄冬杰 Date: 2017-03-23 09:37:58 表register的通用更新业务 -->
+	<update id="doUpdate" parameterType="java.util.Map">
+		<![CDATA[ update register set 
+		 id = #{id},
+ name = #{name},
+ pro_id = #{pro_id},
+ telphone = #{telphone},
+ groupid = #{groupid},
+ openid = #{openid},
+ createtime = #{createtime},
+ createuserid = #{createuserid},
+ updatetime = #{updatetime},
+ updateuserid = #{updateuserid},
+ bz1 = #{bz1},
+ bz2 = #{bz2},
+ bz3 = #{bz3},
+ bz4 = #{bz4},
+ bz5 = #{bz5},
+ bz6 = #{bz6},
+ email = #{email}
+		where id = #{id}]]>
+	</update>
+	
+	
+	<select id="doQueryCountByProid" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(id) as count from register  where 1=1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+		<if test="pro_id!=null and pro_id!=''"><![CDATA[ and pro_id = #{pro_id} ]]></if>
+	</select>
+	
+	<select  id="doQueryByConditionInfo" parameterType="java.util.Map" resultMap="RegisterResult">
+		<![CDATA[ select a.*,b.project_child_name as pro_child_name,c.project_name as pro_name,c.id as parent_pro_id from register a 
+				  left join project_child b on a.pro_id=b.id 
+				  left join project c on b.parent_project_id = c.id where 1=1 ]]>
+		<if test="openid!=null and openid!=''"><![CDATA[ and a.openid = #{openid} ]]></if>
+		<if test="parent_pro_id!=null and parent_pro_id!=''"><![CDATA[ and c.id = #{parent_pro_id} ]]></if>
+		<![CDATA[ order by CONVERT( a.name USING gbk ) COLLATE gbk_chinese_ci ASC  ]]>
+	</select>
+	
+	<insert id="doDelete"  flushCache="true"  parameterType="com.zhsz.dao.entity.misc.Register" >
+		<![CDATA[delete from register where 1=1  ]]>
+		<if test="openid!=null and openid!=''"><![CDATA[ and openid = #{openid} ]]></if>
+	</insert>
+	
+	
+	<select  id="doQueryRegister" parameterType="java.util.Map" resultMap="RegisterResult">
+		<![CDATA[ select a.name, a.telphone, a.email, b.project_child_name, c.project_name, d.group_name, e.companyname from register a 
+					left join project_child b on a.pro_id=b.id 
+					left join project c on b.parent_project_id=c.id 
+					left join `group` d on a.groupid=d.id
+					left join sqn_company e on a.id=e.registerid where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name like '%' #{name} '%' ]]></if>
+		<if test="parent_project_id!=null and parent_project_id!=''"><![CDATA[ and b.parent_project_id = #{parent_project_id} ]]></if>
+		<if test="pro_id!=null and pro_id!=''"><![CDATA[ and a.pro_id = #{pro_id} ]]></if>
+		<if test="group_name!=null and group_name!=''"><![CDATA[ and d.group_name = #{group_name} ]]></if>
+		<if test="telphone!=null and telphone!=''"><![CDATA[ and a.telphone like '%' #{telphone} '%' ]]></if>
+		<if test='s1=="0"'><![CDATA[ and e.registerid is not null ]]></if>
+		<if test='s1=="1"'><![CDATA[ and e.registerid is null ]]></if>
+		<![CDATA[ order by a.id desc limit ${minnum},${maxnum}  ]]>
+	</select>
+	
+	
+	<select  id="doQueryRegisterNoPage" parameterType="java.util.Map" resultMap="RegisterResult">
+		<![CDATA[ select a.name, a.telphone, a.email, b.project_child_name, c.project_name, d.group_name, e.companyname from register a 
+					left join project_child b on a.pro_id=b.id 
+					left join project c on b.parent_project_id=c.id 
+					left join `group` d on a.groupid=d.id 
+					left join sqn_company e on a.id=e.registerid where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name like '%' #{name} '%' ]]></if>
+		<if test="parent_project_id!=null and parent_project_id!=''"><![CDATA[ and b.parent_project_id = #{parent_project_id} ]]></if>
+		<if test="pro_id!=null and pro_id!=''"><![CDATA[ and a.pro_id = #{pro_id} ]]></if>
+		<if test="group_name!=null and group_name!=''"><![CDATA[ and d.group_name = #{group_name} ]]></if>
+		<if test="telphone!=null and telphone!=''"><![CDATA[ and a.telphone like '%' #{telphone} '%' ]]></if>
+		<if test='s1=="0"'><![CDATA[ and e.registerid is not null ]]></if>
+		<if test='s1=="1"'><![CDATA[ and e.registerid is null ]]></if>
+		<![CDATA[ order by a.id desc ]]>
+	</select>
+	
+	
+	<select id="doQueryRegisterCount" parameterType="java.util.Map"
+		resultType="long">
+		<![CDATA[ select count(a.id) as count from register a 
+					left join project_child b on a.pro_id=b.id 
+					left join project c on b.parent_project_id=c.id 
+					left join `group` d on a.groupid=d.id 
+					left join sqn_company e on a.id=e.registerid where 1 = 1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and a.id = #{id} ]]></if>
+		<if test="name!=null and name!=''"><![CDATA[ and a.name like '%' #{name} '%' ]]></if>
+		<if test="parent_project_id!=null and parent_project_id!=''"><![CDATA[ and b.parent_project_id = #{parent_project_id} ]]></if>
+		<if test="pro_id!=null and pro_id!=''"><![CDATA[ and a.pro_id = #{pro_id} ]]></if>
+		<if test="group_name!=null and group_name!=''"><![CDATA[ and d.group_name = #{group_name} ]]></if>
+		<if test="telphone!=null and telphone!=''"><![CDATA[ and a.telphone like '%' #{telphone} '%' ]]></if>
+		<if test='s1=="0"'><![CDATA[ and e.registerid is not null ]]></if>
+		<if test='s1=="1"'><![CDATA[ and e.registerid is null ]]></if>
+	</select>
+	
+	
+	<delete id="deleteById"  flushCache="true"  >
+		<![CDATA[ delete from register where 1 =1 ]]>
+		<if test="id!=null and id!=''"><![CDATA[ and id = #{id} ]]></if>
+	</delete>
+</mapper>
